@@ -9,18 +9,21 @@ body {
 }
 
 #testdiv {
-  visibility: hidden;
-  background: blue;
-  }
-  li {
-      font-family: sans-serif;
-      font-size: 20px;
-      color: black;
-  }
-  input[type=checkbox]:checked + label {
-color:greenyellow;      
-  }
-  input[type=checkbox] + label {
-      color:red;
-  }
-  
+    visibility: hidden;
+    background: blue;
+}
+
+li {
+    font-family: sans-serif;
+    font-size: 20px;
+    color: black;
+}
+
+label + input[type=checkbox] {
+    color: #ff3333;
+    font-style: italic;
+} 
+label + input[type=checkbox]:checked {
+    color: greenyellow;
+    font-style: normal;
+} 
