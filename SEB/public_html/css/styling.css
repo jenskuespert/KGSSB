@@ -17,4 +17,10 @@ body {
       font-size: 20px;
       color: black;
   }
+  input[type=checkbox]:checked + label {
+color:greenyellow;      
+  }
+  input[type=checkbox] + label {
+      color:red;
+  }
   
