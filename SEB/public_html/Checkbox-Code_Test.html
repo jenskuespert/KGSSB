@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/libs/jquery/jquery.js"></script>
+    <script>
+
+      var fertigGeladen = function () {
+        console.log("Geladen");
+      };
+
+      var changed = function () {
+        console.log("changed");
+        var active = [];
+        var box = document.getElementsByClassName("selection");
+        for (e = 0; e < box.length; e++) {
+          if (box[e].checked == true) {
+            active.push(box[e].value);
+          }
+          recalculate(active);
+        }
+      };
+
+      var recalculate = function (active) {
+        for (var x in active) {
+          console.log(active[x]);
+        }
+      };
+
+      $(document).ready(fertigGeladen);
+    </script>
+  </head>
+  <body>
+    <div>
+      <label>
+        <input type="checkbox" name="Backwaren" onchange="changed()" value="Kuchen" class="selection">
+        Kuchen
+      </label>
+      <label>
+        <br>
+        <input type="checkbox" name="Backwaren" onchange="changed()" value="Brötchen" class="selection">
+        Br&oumltchen
+        </br>
+      </label>
+    </div>
+  </body>
+</html>
