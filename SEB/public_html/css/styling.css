@@ -19,11 +19,12 @@ li {
     color: black;
 }
 
-label + input[type=checkbox] {
+input[type=checkbox] + label {
     color: #ff3333;
     font-style: italic;
 } 
-label + input[type=checkbox]:checked {
-    color: greenyellow;
-    font-style: normal;
+
+input[type=checkbox]:checked + label {
+  color: greenyellow;
+  font-style: normal;
 } 
