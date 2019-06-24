@@ -3,4 +3,5 @@ body {
 
 #testdiv {
   visibility: hidden;
+  background: green;
 }
