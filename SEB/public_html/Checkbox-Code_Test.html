@@ -17,7 +17,7 @@
         var active = [];
         var box = document.getElementsByClassName("selection");
         for (e = 0; e < box.length; e++) {
-          if (box[e].checked == true) {
+          if (box[e].checked === true) {
             active.push(box[e].value);
           }
           recalculate(active);
