@@ -3,7 +3,7 @@
 <html>
   <head>
     <title>Dynamic Prototype</title>
-    <link href="css/styling.css" type="text/css" rel="stylesheet">
+    <link href="css/Probe.css" type="text/css" rel="stylesheet">
     <meta charset="utf-8">
     <script src="js/libs/jquery/jquery.js"></script>
     <script>
@@ -59,8 +59,11 @@
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
             //Oberkategorie erstellen
-            a.append("<li id=" + key + "><span>" +
-                    "" + value.n + "</span><ul></ul></li>");
+            a.append("<li id=" + key + "><div class=\"toggleBox\">"+
+          "<input name=\"toggleContent\" id=\"toggleContent\" checked=\"checked\" type=\"checkbox\">"+
+          "<label for=\"toggleContent\" class=\"open\">"+value.n+"</label>"+
+          "<label for=\"toggleContent\" class=\"close\">"+value.n+"</label>"+
+          "<div><ul></ul></li>");
           }
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
