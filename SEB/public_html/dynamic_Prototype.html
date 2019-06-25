@@ -55,17 +55,18 @@
           console.log("key: " + key);
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
-            a.append("<li id=" + key + "><span>" + value.n + "</span><ul></ul></li>");
+            a.append("<li id=" + key + "><span>"+
+        "" + value.n + "</span><ul></ul></li>");
           }
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
             var aval = value.a[akey];
             console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
-              kategorieEintrag.find("ul").append("<li id=" + akey + ">" + aval.n + ", " + aval.ba + "</li>");
+              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name="+akey+" onchange=\"changed()\" value="+akey+" class=\"selection\">" + aval.n + ", " + aval.ba + "</li>");
               console.log("noch kein artikel");
             } else {
-              kategorieEintrag.find("#" + akey).html(aval.n + ", " + aval.ba);
+              kategorieEintrag.find("#" + akey).html("<input type=\"checkbox\" name="+akey+" onchange=\"changed()\" value="+akey+" class=\"selection\">" + aval.n + ", " + aval.ba);
             }
           }
         }

@@ -1,6 +1,30 @@
+header {
+    color:black;
+    font-size: 50px;
+}
+
+
 body {
+    background: lightblue;
 }
 
 #testdiv {
-  visibility: hidden;
+    visibility: hidden;
+    background: blue;
 }
+
+li {
+    font-family: sans-serif;
+    font-size: 20px;
+    color: black;
+}
+
+input[type=checkbox] + label {
+    color: #ff3333;
+    font-style: italic;
+} 
+
+input[type=checkbox]:checked + label {
+  color: greenyellow;
+  font-style: normal;
+} 
