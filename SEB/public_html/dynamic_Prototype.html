@@ -8,6 +8,7 @@
     <script src="js/libs/jquery/jquery.js"></script>
     <script>
       var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
+      var artikelinfo={}; // {id: ArtikelID,{bq: bezugsquelle, vp: Verpackung},{bq...}...}{id: ArtikeID...}... 
 
       var erstelleArtikel = function (katid, arts_li) {
         var ab = artikel[katid];
