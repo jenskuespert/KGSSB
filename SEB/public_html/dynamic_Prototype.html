@@ -72,6 +72,25 @@
         }
 
       };
+      
+      var changed = function () {
+        console.log("changed");
+        var active = [];
+        var box = document.getElementsByClassName("selection");
+        for (e = 0; e < box.length; e++) {
+          if (box[e].checked === true) {
+            active.push(box[e].value);
+          }
+          recalculate(active);
+        }
+      };
+
+      var recalculate = function (active) {
+        for (var x in active) {
+          console.log(active[x]);
+        }
+      };
+      
       var fertigGeladen = function () {
         var bq = ["data/bq_01.html", "data/bq_02.html"];
 
