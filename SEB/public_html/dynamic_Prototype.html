@@ -82,7 +82,6 @@
             products.push(active_product_boxes[e].value);
           }
         }
-        recalculate(products);
 
         var sources = [];
         var active_source_boxes = document.getElementsByClassName("source_selection");
@@ -91,12 +90,12 @@
             sources.push(active_source_boxes[e].value);
           }
         }
-        recalculate(sources);
+        recalculate(products, sources);
       };
 
-      var recalculate = function (active) {
-        for (var x in active) {
-          console.log(active[x]);
+      var recalculate = function (products, sources) {
+        for (var pos in products, sources) {
+          console.log(products[pos], sources[pos]);
         }
       };
 
