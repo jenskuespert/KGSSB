@@ -3,12 +3,12 @@
 <html>
   <head>
     <title>Dynamic Prototype</title>
-    <link href="css/styling.css" type="text/css" rel="stylesheet">
+    <link href="css/Probe.css" type="text/css" rel="stylesheet">
     <meta charset="utf-8">
     <script src="js/libs/jquery/jquery.js"></script>
     <script>
       var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
-      var artikelinfo = {}; // {id: ArtikelID,{bq: bezugsquelle, vp: Verpackung},{bq...}...}{id: ArtikeID...}... 
+      var artikelinfo={}; // ArtikelID -> {bq: bezugsquelle, vp: Verpackung},{bq...}
 
       var erstelleArtikel = function (katid, arts_li) {
         var ab = artikel[katid];
@@ -42,12 +42,14 @@
           erstelleArtikel(id, $(this).find("li"));
         });
       };
+      
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
         var tt = $("#testdiv").find("title");
         var beschr = $("#testdiv").find("#bqinfo");
         var kategorien = $("#testdiv").find("#artikel").children();
-        $("#bq").append("<dt><input type=\"checkbox\" name=" + tt.html + " onchange=\"changed()\" value=" + tt.html + " class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
+        //Zur Liste der Bezugquellen hinzufügen
+        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + tt.html() + "\" class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
 
         erstelleKategorie(kategorien);
 
@@ -56,19 +58,29 @@
           console.log("key: " + key);
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
-            a.append("<li id=" + key + "><span>" +
-                    "" + value.n + "</span><ul></ul></li>");
+            //Oberkategorie erstellen
+            a.append("<li id=" + key + "><div class=\"toggleBox\">"+
+          "<input name=\"toggleContent\" id=\"toggleContent\" checked=\"checked\" type=\"checkbox\">"+
+          "<label for=\"toggleContent\" class=\"open\">"+value.n+"</label>"+
+          "<label for=\"toggleContent\" class=\"close\">"+value.n+"</label>"+
+          "<div><ul></ul></li>");
           }
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
             var aval = value.a[akey];
             console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
+              //noch kein Artikel in der Kategorie, einfach hinzufügen
               kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba + "</li>");
-              console.log("noch kein artikel");
+              //console.log("noch kein artikel");
             } else {
+              //es befinden sich schon Artikel in der Kategorie, trotzdem hinzufügen
               kategorieEintrag.find("#" + akey).html("<input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba);
             }
+            //Artikel zur Artikelinfo Liste hinzufügen
+            if (artikelinfo[akey]!=null) {
+              console.log(key+" ist neu");
+}
           }
         }
 
@@ -95,8 +107,8 @@
       };
 
       var recalculate = function (products, sources) {
-        for (var pos in products, sources) {
-          console.log(products[pos], sources[pos]);
+        for (var pos in products) {
+          console.log(products[pos]);
         }
       };
 
