@@ -7,44 +7,40 @@ and open the template in the editor.
 <html>
   <head>
     <title>TODO supply a title</title>
+    <link href="css/probe.css" type="text/css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
     <div>
       <label>
-        <input type="checkbox" name="Backwaren" value="Kuchen">
-        Kuchen
+        <input type="checkbox" name="Gesch&auml;fte" value="Rewe">
+        Rewe
       </label>
       <label>
         <br>
-        <input type="checkbox" name="Backwaren" value="Brötchen">
-        Br&ouml;tchen
+        <input type="checkbox" name="Gesch&auml;fte" value="Edeka">
+        Edeka
         </br>
       </label>
       <label>
-        <br>
-        <input type="checkbox" name="Essen" value="Nudeln">
-        Nudeln
-        </br>
+        <p>
+        <input type="checkbox" name="Gesch&auml;fte" value="Aldi">
+        Aldi
+        </p>
       </label>
       <br>
       <label>
-        Getr&auml;nke <!-- An dieser Stelle ist der Code noch nicht fertig - Ich arbeite an der Implementation eines Accordeon Elementes
-                      zum Ausklappen einer Liste -->
-        <input type="radio" name="Apfelsaft" value="Apfelsaft">
-        <button>&#8595;</button>
-        
-      <p></p>
-      <label>
-        Essen
-        <select name="Essen" title="Essen" >
-          <option value="Nudeln">Nudeln</option>
-          <option value="Reis">Reis</option>
-          <option value="Lachs">Lachs</option>
-       </select>
-      </label>
-      </br>
+        <span>
+        <input type="radio" name="Saft" value="Apfelsaft">Apfelsaft
+        <label for="Apfelsaft" class="Saft">Rot</label>
+        <div class="panel">
+        <p>hier steht der inhalt</p>
+        </div>
+        </span>
+        <p></p>
+        <input type="radio" name="Saft" value="O-Saft">O-Saft
+      </label> 
     </div>
   </body>
 </html>
