@@ -53,3 +53,8 @@ and open the template in the editor.
 .toggleBox input:checked ~ .open {
     display: none;
 }
+
+input[type=checkbox] + label {
+    color: #ff3333;
+    font-style: italic;
+} 
