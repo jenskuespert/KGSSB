@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title>Dynamic Prototype</title>
+    <link href="css/styling.css" type="text/css" rel="stylesheet">
+    <meta charset="utf-8">
+    <script src="js/libs/jquery/jquery.js"></script>
+    <script>
+      var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
+      var artikelinfo = {}; // {id: ArtikelID,{bq: bezugsquelle, vp: Verpackung},{bq...}...}{id: ArtikeID...}... 
+
+      var erstelleArtikel = function (katid, arts_li) {
+        var ab = artikel[katid];
+        arts_li.each(function (idx) {
+          var id = $(this).attr("id");
+          var name = $(this).children("span:first-child").text();
+          var verpa = $(this).children("span:nth-child(2)").text();
+          console.log("katid " + katid + ", idx " + idx + ", art_id " + id + ", art_name: " + name + ", art_verpack " + verpa);
+
+          var alterArtikel = undefined;
+          if (!(id in ab.a)) {
+            console.log(" nicht bekannt");
+            alterArtikel = {n: name, ba: verpa};
+            ab.a[id] = alterArtikel;
+          } else {
+            alterArtikel = ab.a[id];
+            alterArtikel.ba = alterArtikel.ba + verpa;
+          }
+        });
+      };
+
+      var erstelleKategorie = function (kat) {
+        kat.each(function (idx) {
+          var id = $(this).attr("id");
+          var name = $(this).children("span").text();
+          console.log("idx " + idx + ", id " + id + ", n " + name);
+          if (!(id in artikel)) {
+            console.log(" nicht bekannt");
+            artikel[id] = {n: name, a: {}};
+          }
+          erstelleArtikel(id, $(this).find("li"));
+        });
+      };
+      var ladeBQ = function (data) {
+        $("#testdiv").html(data);
+        var tt = $("#testdiv").find("title");
+        var beschr = $("#testdiv").find("#bqinfo");
+        var kategorien = $("#testdiv").find("#artikel").children();
+        $("#bq").append("<dt><input type=\"checkbox\" name=" + tt.html + " onchange=\"changed()\" value=" + tt.html + " class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
+
+        erstelleKategorie(kategorien);
+
+        for (var key in artikel) {
+          var value = artikel[key];
+          console.log("key: " + key);
+          var a = $("#artikel");
+          if (a.has("#" + key).length === 0) {
+            a.append("<li id=" + key + "><span>" +
+                    "" + value.n + "</span><ul></ul></li>");
+          }
+          var kategorieEintrag = $("#" + key);
+          for (var akey in value.a) {
+            var aval = value.a[akey];
+            console.log("akey " + akey);
+            if (kategorieEintrag.has("#" + akey).length === 0) {
+              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba + "</li>");
+              console.log("noch kein artikel");
+            } else {
+              kategorieEintrag.find("#" + akey).html("<input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba);
+            }
+          }
+        }
+
+      };
+
+      var changed = function () {
+        console.log("changed");
+        var products = [];
+        var active_product_boxes = document.getElementsByClassName("product_selection");
+        for (e = 0; e < active_product_boxes.length; e++) {
+          if (active_product_boxes[e].checked === true) {
+            products.push(active_product_boxes[e].value);
+          }
+        }
+
+        var sources = [];
+        var active_source_boxes = document.getElementsByClassName("source_selection");
+        for (e = 0; e < active_source_boxes.length; e++) {
+          if (active_source_boxes[e].checked === true) {
+            sources.push(active_source_boxes[e].value);
+          }
+        }
+        recalculate(products, sources);
+      };
+
+      var recalculate = function (products, sources) {
+        for (var pos in products, sources) {
+          console.log(products[pos], sources[pos]);
+        }
+      };
+
+      var fertigGeladen = function () {
+        var bq = ["data/bq_01.html", "data/bq_02.html"];
+
+        for (var i = 0; i < bq.length; ++i) {
+          $.ajax({
+            url: bq[i],
+            dataType: "html",
+            success: ladeBQ
+          });
+
+        }
+      };
+      $(document).ready(fertigGeladen);
+    </script>
+  </head>
+  <body>
+    <header>
+      KAUFEN SIE JETZT EIN MIT DEM SEB
+    </header>
+    <main>
+      <h2>verfügbare Bezugsquellen</h2>
+      <a href=#Rewe>
+        <img src="pic/rewe-2017-300x224.png" alt="Rewe" height="112"> </a>
+        <a href=#Netto>
+          <img src="pic/1200px-Netto_Marken-Discount_2018_logo.svg.png" alt="Netto" width="150" height="112"> </a>
+        <a href=#Rewe>
+          <img src="pic/inkoop.png" alt="inkoop"  height="112"> </a>
+        <a href=#Rewe>
+          <img src="pic/Lidl-Logo.svg.png" alt="Lidl"  height="112"> </a>
+          <a href=#Rewe>
+            <img src="pic/aldineu.png" alt="Aldi"  height="112"> </a>
+            <a href=#Rewe>
+              <img src="pic/penny.png" alt="Penny"  height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/Marktkauf.svg.png" alt="Marktkauf"  height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/edeka.png " alt="Edeka"  height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/real.png " alt="Real"  height="112"> </a>
+      <ol id="bq">
+
+      </ol>
+      
+
+        <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19203.829211008553!2d8.774642582109696!3d53.011758019005896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b0d76ea27d2ba1%3A0xeb8084b6201998ae!2sNetto+Filiale!5e0!3m2!1sde!2sde!4v1561365915262!5m2!1sde!2sde" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>--> 
+        
+        <h2>verfügbare Artikel</h2>
+        <ol  id="artikel">
+
+        </ol>
+    </main>
+
+    <div id="testdiv">
+
+    </div>
+  </body>
+</html>
