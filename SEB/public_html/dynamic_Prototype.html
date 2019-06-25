@@ -49,7 +49,7 @@
         var beschr = $("#testdiv").find("#bqinfo");
         var kategorien = $("#testdiv").find("#artikel").children();
         //Zur Liste der Bezugquellen hinzufügen
-        $("#bq").append("<dt><input type=\"checkbox\" name=" + tt.html + " onchange=\"changed()\" value=" + tt + " class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
+        $("#bq").append("<dt><input type=\"checkbox\" name=" + tt.html() + " onchange=\"changed()\" value=" + tt.html() + " class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
 
         erstelleKategorie(kategorien);
 
