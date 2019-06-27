@@ -34,9 +34,9 @@
         kat.each(function (idx) {
           var id = $(this).attr("id");
           var name = $(this).children("span").text();
-          console.log("idx " + idx + ", id " + id + ", n " + name);
+          //console.log("idx " + idx + ", id " + id + ", n " + name);
           if (!(id in artikel)) {
-            console.log(" nicht bekannt");
+            //console.log("nicht bekannt");
             artikel[id] = {n: name, a: {}};
           }
           erstelleArtikel(id, $(this).find("li"));
@@ -46,6 +46,7 @@
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
         var tt = $("#testdiv").find("title");
+        console.log("tt: "+tt.html());
         var beschr = $("#testdiv").find("#bqinfo");
 
         var kategorien = $("#testdiv").find("#artikel").children();
@@ -57,7 +58,7 @@
 
         for (var key in artikel) {
           var value = artikel[key];
-          console.log("key: " + key);
+          //console.log("key: " + key);
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
             //Oberkategorie erstellen
@@ -70,7 +71,8 @@
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
             var aval = value.a[akey];
-            console.log("akey " + akey);
+            console.log("Verpackungsarten: "+aval.ba);
+            //console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
               //noch kein Artikel in der Kategorie, einfach hinzufügen
               kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + "</li>");
@@ -81,10 +83,10 @@
             }
             //Artikel zur Artikelinfo Liste hinzufügen
             if (!(key in artikelinfo)) {
-              console.log(key + " ist neu");
+              console.log("Artikel "+aval.n+" aus Kategorie "+key + " ist neu");
               //Liste der Verpackungsarten Erstellen
               var vp=""; //????
-              var bq="";
+              var bq=tt.html();
             }else{
               //der Artikel hat bereits einen Eintrag in der Artikelinfo Liste
               //-> Bezugsquelle mit Liste der Verpackungsarten, die dort
