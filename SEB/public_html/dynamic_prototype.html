@@ -66,7 +66,7 @@
         $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + tt.html() + "\" class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
 
         $("#testdiv").html("");
-        erstelleKategorie(kategorien, tt.html());
+        erstelleKategorie(kategorien, beschr.text());
 
         for (var key in artikel) {
           var value = artikel[key];
