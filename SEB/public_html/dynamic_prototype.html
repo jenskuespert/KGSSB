@@ -69,7 +69,7 @@
 
         var kategorien = $("#testdiv").find("#artikel").children();
         //Zur Liste der Bezugquellen hinzufügen
-        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + tt.html() + "\" class=\"source_selection\">" + tt.html() + "</dt>");
+        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\">" + tt.html() + "</dt>");
 
         $("#testdiv").html("");
         erstelleKategorie(kategorien, beschr.text());
@@ -126,9 +126,37 @@
       };
 
       var recalculate = function (products, sources) {
-        var einkaufsliste = []; //nach Läden Sortiert 0=sources[0]
-        for (var product in products) {
-          
+        console.log("recalculating list");
+        var fullList = []; //nach Läden Sortiert 0=sources[0]
+        //jeder Laden enthält alles, unsortiert bis jetzt
+
+        //loop through all wanted Products
+        for (var product_pos in products) {
+          //get the product name
+          var product = products[product_pos];
+          console.log("Product: " + product);
+
+          //now get the list of sources that are allowed 
+          //to buy from
+          var sourceList = artikelinfo[products[product_pos]];
+          for (var possibleSource in sourceList) {
+            var bq = sourceList[possibleSource].bq_name;
+            //console.log("BQ: " + bq);
+            var contained = false;
+            var pos=0;
+            for (var selectedSources in sources) {
+              if (sources[selectedSources] === bq) {
+                console.log("contained");
+                conatined = true;
+                pos=selectedSources;
+              }
+            }
+
+            //if the source is allowed add the Product to the List
+            if (contained) {
+              fullList[pos].push(product);
+            }
+          }
         }
       };
 
