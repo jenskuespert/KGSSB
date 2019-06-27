@@ -4,6 +4,7 @@
   <head>
     <title>Prototype Checkbox</title>
     <link href="css/Probe.css" type="text/css" rel="stylesheet">
+    <link href="css/ids.css" type="text/css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
@@ -13,12 +14,12 @@
         <label for="Kuchen">Kuchen</label>
         <br>
 
-        <input type="checkbox" id="Backwaren" name="Brötchen">
-        <label for="Backwaren">Brötchen</label>
+        <input type="checkbox" id="teigwaren" name="Brötchen">
+        <label for="teigwaren">Brötchen</label>
         <br>
 
-        <input type="checkbox" id="Brezel" name="Brezel">
-        <label for="Backwaren">Brezel</label>
+        <input type="checkbox" id="broetchen" name="Brezel">
+        <label for="broetchen">Brezel</label>
         <br>
         <br>
         <br>
@@ -28,10 +29,13 @@
           <label for="toggleContent" class="open">Getr&auml;nke</label>
           <label for="toggleContent" class="close">Getr&auml;nke</label>
           <div>
-              <ul>
-               <li>Sprite</li>
-               <li>Fanta</li>
-              </ul>
+            <ul>
+              <li>
+               <input type="checkbox" id="wasser" name="Wasser">
+               <label for="wasser">Wasser</label></li>
+               <li><input type="checkbox" id="milch" name="Milch">
+               <label for="milch">Milch</label></li>
+            </ul>
           </div>
          </div>   
     </div>

@@ -8,7 +8,7 @@
     <script src="js/libs/jquery/jquery.js"></script>
     <script>
       var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
-      var artikelinfo={}; // ArtikelID -> {bq: bezugsquelle, vp: Verpackung},{bq...}
+      var artikelinfo = {}; // ArtikelID -> {bq: bezugsquelle, vp{}: verfügbare Verpackungsarten},{bq...}
 
       var erstelleArtikel = function (katid, arts_li) {
         var ab = artikel[katid];
@@ -20,7 +20,7 @@
 
           var alterArtikel = undefined;
           if (!(id in ab.a)) {
-            console.log(" nicht bekannt");
+            //console.log(" nicht bekannt");
             alterArtikel = {n: name, ba: verpa};
             ab.a[id] = alterArtikel;
           } else {
@@ -42,15 +42,17 @@
           erstelleArtikel(id, $(this).find("li"));
         });
       };
-      
+
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
         var tt = $("#testdiv").find("title");
         var beschr = $("#testdiv").find("#bqinfo");
+
         var kategorien = $("#testdiv").find("#artikel").children();
         //Zur Liste der Bezugquellen hinzufügen
         $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + tt.html() + "\" class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
 
+        $("#testdiv").html("");
         erstelleKategorie(kategorien);
 
         for (var key in artikel) {
@@ -59,11 +61,11 @@
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
             //Oberkategorie erstellen
-            a.append("<li id=" + key + "><div class=\"toggleBox\">"+
-          "<input name=\"toggleContent\" id=\"toggleContent\" checked=\"checked\" type=\"checkbox\">"+
-          "<label for=\"toggleContent\" class=\"open\">"+value.n+"</label>"+
-          "<label for=\"toggleContent\" class=\"close\">"+value.n+"</label>"+
-          "<div><ul></ul></li>");
+            a.append("<li id=" + key + "><div class=\"toggleBox\">" +
+                    "<input name=\"toggleContent_" + key + "\" id=\"toggleContent_" + key + "\" checked=\"checked\" type=\"checkbox\">" +
+                    "<label for=\"toggleContent_" + key + "\" class=\"open\">" + value.n + "</label>" +
+                    "<label for=\"toggleContent_" + key + "\" class=\"close\">" + value.n + "</label>" +
+                    "<div><ul></ul></li>");
           }
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
@@ -71,16 +73,24 @@
             console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
               //noch kein Artikel in der Kategorie, einfach hinzufügen
-              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba + "</li>");
+              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + "</li>");
               //console.log("noch kein artikel");
             } else {
               //es befinden sich schon Artikel in der Kategorie, trotzdem hinzufügen
-              kategorieEintrag.find("#" + akey).html("<input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba);
+              kategorieEintrag.find("#" + akey).html("<input type=checkbox name=" + akey + " onchange=changed() value=" + akey + " class=product_selection>" + aval.n);
             }
             //Artikel zur Artikelinfo Liste hinzufügen
-            if (artikelinfo[akey]!=null) {
-              console.log(key+" ist neu");
-}
+            if (!(key in artikelinfo)) {
+              console.log(key + " ist neu");
+              //Liste der Verpackungsarten Erstellen
+              var vp=""; //????
+              var bq="";
+            }else{
+              //der Artikel hat bereits einen Eintrag in der Artikelinfo Liste
+              //-> Bezugsquelle mit Liste der Verpackungsarten, die dort
+              //Verfügbar sind
+              
+            }
           }
         }
 
@@ -113,7 +123,11 @@
       };
 
       var fertigGeladen = function () {
-        var bq = ["data/bq_01.html", "data/bq_02.html"];
+        var bq = [
+          "data/beispielliste.html", "data/bq_01.html",
+          "data/lidl.html", "data/penny.html", "data/aldi.html",
+          "data/rewe.html", "data/inkoop.html", "data/marktkauf.html",
+          "data/netto.html"];
 
         for (var i = 0; i < bq.length; ++i) {
           $.ajax({
@@ -135,16 +149,16 @@
       <h2>verfügbare Bezugsquellen</h2>
       <a href=#Rewe>
         <img src="pic/rewe-2017-300x224.png" alt="Rewe" height="112"> </a>
-        <a href=#Netto>
-          <img src="pic/1200px-Netto_Marken-Discount_2018_logo.svg.png" alt="Netto" width="150" height="112"> </a>
-        <a href=#Rewe>
-          <img src="pic/inkoop.png" alt="inkoop"  height="112"> </a>
-        <a href=#Rewe>
-          <img src="pic/Lidl-Logo.svg.png" alt="Lidl"  height="112"> </a>
-          <a href=#Rewe>
-            <img src="pic/aldineu.png" alt="Aldi"  height="112"> </a>
-            <a href=#Rewe>
-              <img src="pic/penny.png" alt="Penny"  height="112"> </a>
+      <a href=#Netto>
+        <img src="pic/1200px-Netto_Marken-Discount_2018_logo.svg.png" alt="Netto" width="150" height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/inkoop.png" alt="inkoop"  height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/Lidl-Logo.svg.png" alt="Lidl"  height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/aldineu.png" alt="Aldi"  height="112"> </a>
+      <a href=#Rewe>
+        <img src="pic/penny.png" alt="Penny"  height="112"> </a>
       <a href=#Rewe>
         <img src="pic/Marktkauf.svg.png" alt="Marktkauf"  height="112"> </a>
       <a href=#Rewe>
@@ -154,14 +168,14 @@
       <ol id="bq">
 
       </ol>
-      
 
-        <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19203.829211008553!2d8.774642582109696!3d53.011758019005896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b0d76ea27d2ba1%3A0xeb8084b6201998ae!2sNetto+Filiale!5e0!3m2!1sde!2sde!4v1561365915262!5m2!1sde!2sde" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>--> 
-        
-        <h2>verfügbare Artikel</h2>
-        <ol  id="artikel">
 
-        </ol>
+      <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19203.829211008553!2d8.774642582109696!3d53.011758019005896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b0d76ea27d2ba1%3A0xeb8084b6201998ae!2sNetto+Filiale!5e0!3m2!1sde!2sde!4v1561365915262!5m2!1sde!2sde" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>--> 
+
+      <h2>verfügbare Artikel</h2>
+      <ol  id="artikel">
+
+      </ol>
     </main>
 
     <div id="testdiv">
