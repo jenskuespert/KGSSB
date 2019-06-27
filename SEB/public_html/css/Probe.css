@@ -1,25 +1,16 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : 25.06.2019, 09:09:08
-    Author     : woidasi
-*/
 .toggleBox {
     position: relative;
     border: 1px solid #ddd;
 }
  
 /* Ausblenden des input-Feldes */
-.toggleBox input {
+.toggleBox > input {
     position: absolute;
     left: -99999px;
 }
  
 /* Gestaltung der labels */
-.toggleBox label {
+.toggleBox > label {
     display: block;
     background: #68B022;
     color: #fff;
@@ -28,17 +19,17 @@ and open the template in the editor.
     cursor: pointer;
 }
  
-.toggleBox label:hover {
+.toggleBox > label:hover {
     background: #ddd;
 }
  
 /* Der Aufklappmechanismus */
-.toggleBox input:not(:checked) ~ div {
+.toggleBox > input:not(:checked) ~ div {
     opacity: 0;
     height: 0;
 }
  
-.toggleBox input:checked ~ div {
+.toggleBox > input:checked ~ div {
     opacity: 1;
     padding: .8em;
     -webkit-transition: opacity 1s ease-in-out;
@@ -49,8 +40,8 @@ and open the template in the editor.
 }
  
 /* Steuerung der Sichtbarkeit der labels */
-.toggleBox input:not(:checked) ~ .close,
-.toggleBox input:checked ~ .open {
+.toggleBox > input:not(:checked) ~ .close,
+.toggleBox > input:checked ~ .open {
     display: none;
 }
 
@@ -58,3 +49,7 @@ input[type=checkbox] + label {
     color: #ff3333;
     font-style: italic;
 } 
+
+li {
+  list-style-type: none;
+}

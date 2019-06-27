@@ -43,10 +43,12 @@
       };
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
-        var tt = $("#testdiv").find("title");
-        var beschr = $("#testdiv").find("#bqinfo");
+        var name = $("#testdiv").find("title");
+        var kennung = $("#testdiv").find("#bqinfo");
         var kategorien = $("#testdiv").find("#artikel").children();
-        $("#bq").append("<dt>" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
+        var logo = "data/" + kennung.text() + ".png";
+        console.log("kennung:" + logo);
+        $("#bq").append("<dt>" + name.html() + "</dt><dd><img width=\"100px\" src=\"" +  logo + "\"></dd>");
 
         erstelleKategorie(kategorien);
 
@@ -73,10 +75,11 @@
       };
       var fertigGeladen = function () {
         var bq = [
-          "data/beispielliste.html", "data/bq_01.html",
+          //"data/beispielliste.html", "data/bq_01.html",
           "data/lidl.html", "data/penny.html", "data/aldi.html",
           "data/rewe.html", "data/inkoop.html", "data/marktkauf.html",
-          "data/netto.html"];
+          "data/netto.html", "data/rewe.html", "data/edeka.html",
+          "data/fuellkorn.html", "data/penny.html", "data/real.htm"];
 
         for (var i = 0; i < bq.length; ++i) {
           $.ajax({
