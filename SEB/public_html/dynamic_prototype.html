@@ -22,11 +22,12 @@
           if (!(id in artikelinfo)) {
             console.log("Artikel " + id + " (" + verpa + ") aus Kategorie " + katid + " von " + bq_name + " ist neu");
             //an Die Liste anhängen
-            artikelinfo[id]
+            artikelinfo[id]={bq_name, verpa}
           } else {
             //der Artikel hat bereits einen Eintrag in der Artikelinfo Liste
             //-> Bezugsquelle mit Liste der Verpackungsarten, die dort
             //Verfügbar sind
+            //artikelinfo[id].push(bq_name, verpa);
 
           }
 
