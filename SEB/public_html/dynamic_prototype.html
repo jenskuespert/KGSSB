@@ -72,11 +72,11 @@
             console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
               //noch kein Artikel in der Kategorie, einfach hinzufügen
-              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba + "</li>");
+              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey+"</li>");
               //console.log("noch kein artikel");
             } else {
               //es befinden sich schon Artikel in der Kategorie, trotzdem hinzufügen
-              kategorieEintrag.find("#" + akey).html("<input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n + ", " + aval.ba);
+              kategorieEintrag.find("#" + akey).html("<input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + " class=\"product_selection\">" + aval.n);
             }
             //Artikel zur Artikelinfo Liste hinzufügen
             if (artikelinfo[akey]!=null) {
