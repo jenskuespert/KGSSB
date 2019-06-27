@@ -1,3 +1,10 @@
+* {
+  font-family: Comic Sans MS;
+}
+body {
+  background-image: url(../img/plastik.jpg);
+  background-repeat: no-repeat;
+}
 .toggleBox {
     position: relative;
     border: 1px solid #ddd;
@@ -12,9 +19,9 @@
 /* Gestaltung der labels */
 .toggleBox > label {
     display: block;
-    background: #68B022;
-    color: #fff;
-    padding: .4em;
+    background-color: white;
+    opacity: 0.5;
+    padding: 0.4em;
     text-align: center;
     cursor: pointer;
 }
@@ -52,4 +59,19 @@ input[type=checkbox] + label {
 
 li {
   list-style-type: none;
+}
+
+h1 {
+  margin-left: 1em;
+  text-decoration: underline;
+  color: orange;
+}
+
+h2 {
+  margin-left: 1em;
+  color: orange;
+}
+
+.eintrag {
+  margin-left: 0.3em;
 }
