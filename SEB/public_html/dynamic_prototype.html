@@ -8,15 +8,27 @@
     <script src="js/libs/jquery/jquery.js"></script>
     <script>
       var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
-      var artikelinfo = {}; // ArtikelID -> {bq: bezugsquelle, vp{}: verfügbare Verpackungsarten},{bq...}
+      var artikelinfo = {}; // ArtikelID -> {bq: bezugsquelle, vp: verfügbare Verpackungsart},{bq...}
 
-      var erstelleArtikel = function (katid, arts_li) {
+      var erstelleArtikel = function (katid, arts_li, bq_name) {
         var ab = artikel[katid];
         arts_li.each(function (idx) {
           var id = $(this).attr("id");
           var name = $(this).children("span:first-child").text();
           var verpa = $(this).children("span:nth-child(2)").text();
-          console.log("katid " + katid + ", idx " + idx + ", art_id " + id + ", art_name: " + name + ", art_verpack " + verpa);
+          //console.log("bq " + bq_name + ", idx " + idx + ", art_id " + id + ", art_name: " + name + ", art_verpack " + verpa);
+
+          //Artikel zur Artikelinfo Liste hinzufügen
+          if (!(id in artikelinfo)) {
+            console.log("Artikel " + id + " (" + verpa + ") aus Kategorie " + katid + " von " + bq_name + " ist neu");
+            //an Die Liste anhängen
+            artikelinfo[id]
+          } else {
+            //der Artikel hat bereits einen Eintrag in der Artikelinfo Liste
+            //-> Bezugsquelle mit Liste der Verpackungsarten, die dort
+            //Verfügbar sind
+
+          }
 
           var alterArtikel = undefined;
           if (!(id in ab.a)) {
@@ -30,7 +42,7 @@
         });
       };
 
-      var erstelleKategorie = function (kat) {
+      var erstelleKategorie = function (kat, bq_name) {
         kat.each(function (idx) {
           var id = $(this).attr("id");
           var name = $(this).children("span").text();
@@ -39,14 +51,14 @@
             //console.log("nicht bekannt");
             artikel[id] = {n: name, a: {}};
           }
-          erstelleArtikel(id, $(this).find("li"));
+          erstelleArtikel(id, $(this).find("li"), bq_name);
         });
       };
 
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
         var tt = $("#testdiv").find("title");
-        console.log("tt: "+tt.html());
+        //console.log("tt: "+tt.html());
         var beschr = $("#testdiv").find("#bqinfo");
 
         var kategorien = $("#testdiv").find("#artikel").children();
@@ -54,10 +66,11 @@
         $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + tt.html() + "\" class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
 
         $("#testdiv").html("");
-        erstelleKategorie(kategorien);
+        erstelleKategorie(kategorien, tt.html());
 
         for (var key in artikel) {
           var value = artikel[key];
+
           //console.log("key: " + key);
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
@@ -71,7 +84,7 @@
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
             var aval = value.a[akey];
-            console.log("Verpackungsarten: "+aval.ba);
+            //console.log("Verpackungsarten: " + aval.ba);
             //console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
               //noch kein Artikel in der Kategorie, einfach hinzufügen
@@ -80,18 +93,6 @@
             } else {
               //es befinden sich schon Artikel in der Kategorie, trotzdem hinzufügen
               kategorieEintrag.find("#" + akey).html("<input type=checkbox name=" + akey + " onchange=changed() value=" + akey + " class=product_selection>" + aval.n);
-            }
-            //Artikel zur Artikelinfo Liste hinzufügen
-            if (!(key in artikelinfo)) {
-              console.log("Artikel "+aval.n+" aus Kategorie "+key + " ist neu");
-              //Liste der Verpackungsarten Erstellen
-              var vp=""; //????
-              var bq=tt.html();
-            }else{
-              //der Artikel hat bereits einen Eintrag in der Artikelinfo Liste
-              //-> Bezugsquelle mit Liste der Verpackungsarten, die dort
-              //Verfügbar sind
-              
             }
           }
         }
@@ -126,7 +127,6 @@
 
       var fertigGeladen = function () {
         var bq = [
-          "data/beispielliste.html", "data/bq_01.html",
           "data/lidl.html", "data/penny.html", "data/aldi.html",
           "data/rewe.html", "data/inkoop.html", "data/marktkauf.html",
           "data/netto.html"];
@@ -145,7 +145,7 @@
   </head>
   <body>
     <header>
-      KAUFEN SIE JETZT EIN MIT DEM SEB
+      <h1>KAUFEN SIE JETZT EIN MIT DEM SEB</h1>
     </header>
     <main>
       <h2>verfügbare Bezugsquellen</h2>
