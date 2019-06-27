@@ -50,7 +50,6 @@ body {
 .toggleBox > input:not(:checked) ~ .close,
 .toggleBox > input:checked ~ .open {
     display: none;
-    opacity: 
 }
 
 input[type=checkbox] + label {
