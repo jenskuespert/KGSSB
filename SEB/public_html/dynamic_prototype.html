@@ -51,6 +51,7 @@
         //Zur Liste der Bezugquellen hinzufügen
         $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + tt.html() + "\" class=\"source_selection\">" + tt.html() + "</dt><dd>" + beschr.html() + "</dd>");
 
+        $("#testdiv").html("");
         erstelleKategorie(kategorien);
 
         for (var key in artikel) {
@@ -60,9 +61,9 @@
           if (a.has("#" + key).length === 0) {
             //Oberkategorie erstellen
             a.append("<li id=" + key + "><div class=\"toggleBox\">"+
-          "<input name=\"toggleContent\" id=\"toggleContent\" checked=\"checked\" type=\"checkbox\">"+
-          "<label for=\"toggleContent\" class=\"open\">"+value.n+"</label>"+
-          "<label for=\"toggleContent\" class=\"close\">"+value.n+"</label>"+
+          "<input name=\"toggleContent_"+key+"\" id=\"toggleContent_"+key+"\" checked=\"checked\" type=\"checkbox\">"+
+          "<label for=\"toggleContent_"+key+"\" class=\"open\">"+value.n+"</label>"+
+          "<label for=\"toggleContent_"+key+"\" class=\"close\">"+value.n+"</label>"+
           "<div><ul></ul></li>");
           }
           var kategorieEintrag = $("#" + key);
