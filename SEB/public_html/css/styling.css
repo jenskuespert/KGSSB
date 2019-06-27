@@ -25,6 +25,6 @@ input[type=checkbox] + label {
 } 
 
 input[type=checkbox]:checked + label {
-  color: greenyellow;
+    color:#57c624;
   font-style: normal;
 } 
