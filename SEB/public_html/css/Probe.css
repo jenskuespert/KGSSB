@@ -5,6 +5,10 @@ body {
   background-image: url(../img/plastik.jpg);
   background-repeat: no-repeat;
 }
+ul.ergebnis>li {
+  font-size: xx-large;
+}
+
 .toggleBox {
     position: relative;
     border: 1px solid #ddd;
