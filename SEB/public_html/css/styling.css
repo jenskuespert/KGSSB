@@ -5,7 +5,7 @@ header {
 
 
 body {
-    background: lightblue;
+  background: linear-gradient(#1800ff, grey);
 }
 
 #testdiv {
