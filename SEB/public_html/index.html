@@ -48,7 +48,7 @@
         var kategorien = $("#testdiv").find("#artikel").children();
         var logo = "data/" + kennung.text() + ".png";
         console.log("kennung:" + logo);
-        $("#bq").append("<dt>" + name.html() + "</dt><dd><img width=\"100px\" src=\"" +  logo + "\">" + kennung.html() + "</dd>");
+        $("#bq").append("<dt>" + name.html() + "</dt><dd><img width=\"100px\" src=\"" +  logo + "\"></dd>");
 
         erstelleKategorie(kategorien);
 
@@ -75,10 +75,11 @@
       };
       var fertigGeladen = function () {
         var bq = [
-          "data/beispielliste.html", "data/bq_01.html",
+          //"data/beispielliste.html", "data/bq_01.html",
           "data/lidl.html", "data/penny.html", "data/aldi.html",
           "data/rewe.html", "data/inkoop.html", "data/marktkauf.html",
-          "data/netto.html"];
+          "data/netto.html", "data/rewe.html", "data/edeka.html",
+          "data/fuellkorn.html", "data/penny.html", "data/real.htm"];
 
         for (var i = 0; i < bq.length; ++i) {
           $.ajax({
