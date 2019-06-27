@@ -50,6 +50,7 @@ body {
 .toggleBox > input:not(:checked) ~ .close,
 .toggleBox > input:checked ~ .open {
     display: none;
+    opacity: 
 }
 
 input[type=checkbox] + label {
@@ -70,7 +71,6 @@ h1 {
 h2 {
   margin-left: 1em;
   color: orange;
-  opacity: 0;
 }
 
 .eintrag {
