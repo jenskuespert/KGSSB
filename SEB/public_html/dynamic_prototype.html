@@ -33,7 +33,6 @@
             var info = artikelinfo[id];
             info.push({bq_name, verpa});
             artikelinfo[id] = info;
-
           }
 
           var alterArtikel = undefined;
@@ -47,7 +46,7 @@
           }
         });
       };
-
+      
       var erstelleKategorie = function (kat, bq_name) {
         kat.each(function (idx) {
           var id = $(this).attr("id");
@@ -60,23 +59,19 @@
           erstelleArtikel(id, $(this).find("li"), bq_name);
         });
       };
-
+      
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
         var tt = $("#testdiv").find("title");
         //console.log("tt: "+tt.html());
         var beschr = $("#testdiv").find("#bqinfo");
-
         var kategorien = $("#testdiv").find("#artikel").children();
         //Zur Liste der Bezugquellen hinzufügen
         $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\">" + tt.html() + "</dt>");
-
         $("#testdiv").html("");
         erstelleKategorie(kategorien, beschr.text());
-
         for (var key in artikel) {
           var value = artikel[key];
-
           //console.log("key: " + key);
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
@@ -104,7 +99,7 @@
         }
 
       };
-
+      
       var changed = function () {
         console.log("changed");
         var products = [];
@@ -127,37 +122,104 @@
 
       var recalculate = function (products, sources) {
         console.log("recalculating list");
-        var fullList = []; //nach Läden Sortiert 0=sources[0]
-        //jeder Laden enthält alles, unsortiert bis jetzt
+        /*var fullList = []; //nach Läden Sortiert 0=sources[0]
+         //jeder Laden enthält alles, unsortiert bis jetzt
+         
+         //loop through all wanted Products
+         for (var product_pos in products) {
+         //get the product name
+         var product = products[product_pos];
+         console.log("Product: " + product);
+         
+         //now get the list of sources that are allowed 
+         //to buy from
+         var sourceList = artikelinfo[products[product_pos]];
+         for (var possibleSource in sourceList) {
+         var bq = sourceList[possibleSource].bq_name;
+         //console.log("BQ: " + bq);
+         var contained = false;
+         var pos = 0;
+         for (var selectedSources in sources) {
+         if (sources[selectedSources] === bq) {
+         console.log("contained");
+         conatined = true;
+         pos = selectedSources;
+         }
+         }
+         
+         //if the source is allowed add the Product to the List
+         if (contained) {
+         fullList[pos].push(product);
+         }
+         }*/
 
-        //loop through all wanted Products
-        for (var product_pos in products) {
-          //get the product name
-          var product = products[product_pos];
-          console.log("Product: " + product);
+        var bq_list = [];
+        var item_list = []; //Anzeigenamen + Verpackungsart
 
-          //now get the list of sources that are allowed 
-          //to buy from
-          var sourceList = artikelinfo[products[product_pos]];
-          for (var possibleSource in sourceList) {
-            var bq = sourceList[possibleSource].bq_name;
-            //console.log("BQ: " + bq);
-            var contained = false;
-            var pos=0;
-            for (var selectedSources in sources) {
-              if (sources[selectedSources] === bq) {
-                console.log("contained");
-                conatined = true;
-                pos=selectedSources;
+        for (pos_1 in products) {
+          var product = products[pos_1];
+          var info = artikelinfo[product];
+          //Liste mit allen Läden und den dazugehörigen Verpackungsarten
+          //in denen man dieses Produkt Kaufen kann
+
+          for (pos_2 in info) {
+            var bq = info[pos_2].bq_name;
+            //test if the store is on the whitelist from the user
+            if (containsObj(sources, bq)) {
+              //test if the store name is already on the List of stores
+              if (containsObj(bq_list, bq)) {
+                //bereits vorhanden, Position finden und dort
+                //die Artikelliste vervollständigen
+                var save_position = bq_list.indexOf(bq);
+                //bereits vorhandene List holen
+                var items = item_list[save_position];
+                //Produkt anfügen
+                items.push(product + ", " + vp); //Anzeigename+ Verpackungsart
+                //und alte überschreiben
+                item_list[save_position] = items;
+              } else {
+                //noch nicht vorhanden, einfach ans Ende anhängen,
+                //gleiches gilt für die Artikelliste
+                bq_list.push(bq);
+                var pos = bq_list.indexOf(bq);
+                //leere Artikelliste erstellen
+                var info = [];
+                //ersten Artikel anhängen
+                info.push(product);
+                //diese Liste dann an den Gesamteinkaufszettel anhängen
+                item_list.push(info);
               }
-            }
-
-            //if the source is allowed add the Product to the List
-            if (contained) {
-              fullList[pos].push(product);
             }
           }
         }
+
+        updateResultOnScreen(bq_list, item_list);
+
+      };
+
+      var updateResultOnScreen = function (bq_list, item_list) {
+        console.log("updating results on screen");
+        $("#outputdiv").html("test");
+        for (pos in bq_list) {
+          var result = "";
+
+          var items = item_list[pos];
+          for (var pos_2 in items) {
+            result += items[pos_2] + ", ";
+          }
+          console.log(result);
+          $("#outputdiv").append(result + "<br>");
+        }
+      };
+
+      var containsObj = function (list, obj) {
+        var contains = false;
+        for (pos in list) {
+          if (list[pos] === obj) {
+            contains = true;
+          }
+        }
+        return contains;
       };
 
       var fertigGeladen = function () {
@@ -165,14 +227,12 @@
           "data/lidl.html", "data/penny.html", "data/aldi.html",
           "data/rewe.html", "data/inkoop.html", "data/marktkauf.html",
           "data/netto.html"];
-
         for (var i = 0; i < bq.length; ++i) {
           $.ajax({
             url: bq[i],
             dataType: "html",
             success: ladeBQ
           });
-
         }
       };
       $(document).ready(fertigGeladen);
@@ -213,6 +273,9 @@
       <ol  id="artikel">
 
       </ol>
+      <div id="outputdiv">
+
+      </div>
     </main>
 
     <div id="testdiv">
