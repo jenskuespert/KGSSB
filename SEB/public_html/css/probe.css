@@ -87,3 +87,7 @@ h2 {
 dt {
   color: red;
 }
+
+#nebeneinander {
+  float: left;
+}
