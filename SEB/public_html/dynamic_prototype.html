@@ -167,8 +167,10 @@
           //Liste mit allen Läden und den dazugehörigen Verpackungsarten
           //in denen man dieses Produkt Kaufen kann
 
-          for (pos_2 in info) {
-            console.log(pos_2);
+          console.log(info.length);
+
+          for (var pos_2 = 0; pos_2 < info.length; pos_2++) {
+            //console.log(pos_2);
             var bq = info[pos_2].bq_name;
             //test if the store is on the whitelist from the user
             if (containsObj(sources, bq)) {
@@ -180,7 +182,7 @@
                 //bereits vorhandene List holen
                 var items = item_list[save_position];
                 //Produkt anfügen
-                items.push(product + ", " + vp); //Anzeigename+ Verpackungsart
+                items.push(product/* + ", " /*+ vp*/); //Anzeigename+ Verpackungsart
                 //und alte überschreiben
                 item_list[save_position] = items;
               } else {
@@ -207,7 +209,7 @@
         console.log("updating results on screen");
         $("#outputdiv").html("");
         for (pos in bq_list) {
-          var result = "";
+          var result = bq_list[pos]+" <br>";
 
           var items = item_list[pos];
           for (var pos_2 in items) {
