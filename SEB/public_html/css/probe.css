@@ -63,19 +63,31 @@ input[type=checkbox] + label {
 
 li {
   list-style-type: none;
+  color: red;
 }
 
 h1 {
   margin-left: 1em;
   text-decoration: underline;
-  color: orange;
+  font-weight: bold;
+  color: red;
 }
 
 h2 {
   margin-left: 1em;
-  color: orange;
+  color: red;
+  text-decoration: underline;
+  font-weight: normal;
 }
 
 .eintrag {
   margin-left: 0.3em;
+}
+
+dt {
+  color: red;
+}
+
+#nebeneinander {
+  float: left;
 }
