@@ -172,6 +172,7 @@
           for (var pos_2 = 0; pos_2 < info.length; pos_2++) {
             //console.log(pos_2);
             var bq = info[pos_2].bq_name;
+            var vp= info[pos_2].verpa;
             //test if the store is on the whitelist from the user
             if (containsObj(sources, bq)) {
               //test if the store name is already on the List of stores
@@ -182,7 +183,7 @@
                 //bereits vorhandene List holen
                 var items = item_list[save_position];
                 //Produkt anfügen
-                items.push(product/* + ", " /*+ vp*/); //Anzeigename+ Verpackungsart
+                items.push(product + ", (" + vp+")"); //Anzeigename+ Verpackungsart
                 //und alte überschreiben
                 item_list[save_position] = items;
               } else {
@@ -209,15 +210,15 @@
         console.log("updating results on screen");
         $("#outputdiv").html("");
         for (pos in bq_list) {
-          var result = bq_list[pos]+" <br>";
+          var result = bq_list[pos]+" <br><ul>";
 
           var items = item_list[pos];
           for (var pos_2 in items) {
-            result += items[pos_2] + ", ";
+            result += "<li>"+items[pos_2] + "</li>";
             //console.log(items[pos_2]);
           }
           console.log(result);
-          $("#outputdiv").append(result + "<br>");
+          $("#outputdiv").append(result + "</ul>");
         }
       };
 
