@@ -46,7 +46,7 @@
           }
         });
       };
-      
+
       var erstelleKategorie = function (kat, bq_name) {
         kat.each(function (idx) {
           var id = $(this).attr("id");
@@ -59,15 +59,19 @@
           erstelleArtikel(id, $(this).find("li"), bq_name);
         });
       };
-      
+
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
         var tt = $("#testdiv").find("title");
         //console.log("tt: "+tt.html());
         var beschr = $("#testdiv").find("#bqinfo");
         var kategorien = $("#testdiv").find("#artikel").children();
+
+        var logo = "data/" + beschr.text();
+        $("bq").append("<dt>" + tt.html() + "<dt><dd><img width=100px src=" + logo + "> </dd>");
+
         //Zur Liste der Bezugquellen hinzufügen
-        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\"> " + tt.html() + "</dt>");
+        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\"> " + tt.html() + "<dd><img width=100px src=" + logo + "> </dd></dt>");
         $("#testdiv").html("");
         erstelleKategorie(kategorien, beschr.text());
         for (var key in artikel) {
@@ -99,9 +103,9 @@
         }
 
       };
-      
+
       var changed = function () {
-        console.log("changed");
+        //console.log("changed");
         var products = [];
         var active_product_boxes = document.getElementsByClassName("product_selection");
         for (e = 0; e < active_product_boxes.length; e++) {
@@ -121,7 +125,7 @@
       };
 
       var recalculate = function (products, sources) {
-        console.log("recalculating list");
+        //console.log("recalculating list");
         /*var fullList = []; //nach Läden Sortiert 0=sources[0]
          //jeder Laden enthält alles, unsortiert bis jetzt
          
@@ -158,11 +162,13 @@
 
         for (pos_1 in products) {
           var product = products[pos_1];
+          //sconsole.log(product);
           var info = artikelinfo[product];
           //Liste mit allen Läden und den dazugehörigen Verpackungsarten
           //in denen man dieses Produkt Kaufen kann
 
           for (pos_2 in info) {
+            console.log(pos_2);
             var bq = info[pos_2].bq_name;
             //test if the store is on the whitelist from the user
             if (containsObj(sources, bq)) {
@@ -199,13 +205,14 @@
 
       var updateResultOnScreen = function (bq_list, item_list) {
         console.log("updating results on screen");
-        $("#outputdiv").html("test");
+        $("#outputdiv").html("");
         for (pos in bq_list) {
           var result = "";
 
           var items = item_list[pos];
           for (var pos_2 in items) {
             result += items[pos_2] + ", ";
+            //console.log(items[pos_2]);
           }
           console.log(result);
           $("#outputdiv").append(result + "<br>");
