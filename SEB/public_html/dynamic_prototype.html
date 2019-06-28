@@ -67,11 +67,11 @@
         var beschr = $("#testdiv").find("#bqinfo");
         var kategorien = $("#testdiv").find("#artikel").children();
 
-        var logo = "data/" + beschr.text();
+        var logo = "data/" + beschr.text()+".png";
         $("bq").append("<dt>" + tt.html() + "<dt><dd><img width=100px src=" + logo + "> </dd>");
 
         //Zur Liste der Bezugquellen hinzufügen
-        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\"> " + tt.html() + "<dd><img width=100px src=" + logo + "> </dd></dt>");
+        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\"> " /*+ tt.html() */+ "<dd><img width=100px src=" + logo + "> </dd></dt>");
         $("#testdiv").html("");
         erstelleKategorie(kategorien, beschr.text());
         for (var key in artikel) {
@@ -254,24 +254,6 @@
     </header>
     <main>
       <h2>Verfügbare Bezugsquellen</h2>
-      <a href=#Rewe>
-        <img src="pic/rewe-2017-300x224.png" alt="Rewe" height="112"> </a>
-      <a href=#Netto>
-        <img src="pic/1200px-Netto_Marken-Discount_2018_logo.svg.png" alt="Netto" width="150" height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/inkoop.png" alt="inkoop"  height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/Lidl-Logo.svg.png" alt="Lidl"  height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/aldineu.png" alt="Aldi"  height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/penny.png" alt="Penny"  height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/Marktkauf.svg.png" alt="Marktkauf"  height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/edeka.png " alt="Edeka"  height="112"> </a>
-      <a href=#Rewe>
-        <img src="pic/real.png " alt="Real"  height="112"> </a>
       <ol id="bq">
 
       </ol>
