@@ -67,7 +67,7 @@
         var beschr = $("#testdiv").find("#bqinfo");
         var kategorien = $("#testdiv").find("#artikel").children();
         //Zur Liste der Bezugquellen hinzufügen
-        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\">" + tt.html() + "</dt>");
+        $("#bq").append("<dt><input type=\"checkbox\" name=\"" + tt.html() + "\" onchange=\"changed()\" value=\"" + beschr.text() + "\" class=\"source_selection\"> " + tt.html() + "</dt>");
         $("#testdiv").html("");
         erstelleKategorie(kategorien, beschr.text());
         for (var key in artikel) {
@@ -89,11 +89,11 @@
             //console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
               //noch kein Artikel in der Kategorie, einfach hinzufügen
-              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + "</li>");
+              kategorieEintrag.find("ul").append("<li id=" + akey + "><input type=\"checkbox\" name=" + akey + " onchange=\"changed()\" value=" + akey + "></li>");
               //console.log("noch kein artikel");
             } else {
               //es befinden sich schon Artikel in der Kategorie, trotzdem hinzufügen
-              kategorieEintrag.find("#" + akey).html("<input type=checkbox name=" + akey + " onchange=changed() value=" + akey + " class=product_selection>" + aval.n);
+              kategorieEintrag.find("#" + akey).html("<input type=checkbox name=" + akey + " onchange=changed() value=" + akey + " class=product_selection> " + aval.n);
             }
           }
         }
@@ -240,10 +240,10 @@
   </head>
   <body>
     <header>
-      <h1>KAUFEN SIE JETZT EIN MIT DEM SEB</h1>
+      <h1>Kaufen Sie jetzt ein mit dem Stuhrer-Einkaufsberater</h1>
     </header>
     <main>
-      <h2>verfügbare Bezugsquellen</h2>
+      <h2>Verfügbare Bezugsquellen</h2>
       <a href=#Rewe>
         <img src="pic/rewe-2017-300x224.png" alt="Rewe" height="112"> </a>
       <a href=#Netto>
@@ -269,7 +269,7 @@
 
       <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19203.829211008553!2d8.774642582109696!3d53.011758019005896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47b0d76ea27d2ba1%3A0xeb8084b6201998ae!2sNetto+Filiale!5e0!3m2!1sde!2sde!4v1561365915262!5m2!1sde!2sde" width="400" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>--> 
 
-      <h2>verfügbare Artikel</h2>
+      <h2>Verfügbare Artikel</h2>
       <ol  id="artikel">
 
       </ol>
