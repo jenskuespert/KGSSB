@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <title>SEB</title>
+    <link href="css/styling.css" type="text/css" rel="stylesheet">
+    <meta charset="utf-8">
+    <script src="js/libs/jquery/jquery.js"></script>
+    <script>
+      var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
+
+      var erstelleArtikel = function (katid, arts_li) {
+        var ab = artikel[katid];
+        arts_li.each(function (idx) {
+          var id = $(this).attr("id");
+          var name = $(this).children("span:first-child").text();
+          var verpa = $(this).children("span:nth-child(2)").text();
+          console.log("katid " + katid + ", idx " + idx + ", art_id " + id + ", art_name: " + name + ", art_verpack " + verpa);
+
+          var alterArtikel = undefined;
+          if (!(id in ab.a)) {
+            console.log(" nicht bekannt");
+            alterArtikel = {n: name, ba: verpa};
+            ab.a[id] = alterArtikel;
+          } else {
+            alterArtikel = ab.a[id];
+            alterArtikel.ba = alterArtikel.ba + verpa;
+          }
+        });
+      };
+
+      var erstelleKategorie = function (kat) {
+        kat.each(function (idx) {
+          var id = $(this).attr("id");
+          var name = $(this).children("span").text();
+          console.log("idx " + idx + ", id " + id + ", n " + name);
+          if (!(id in artikel)) {
+            console.log(" nicht bekannt");
+            artikel[id] = {n: name, a: {}};
+          }
+          erstelleArtikel(id, $(this).find("li"));
+        });
+      };
+      var ladeBQ = function (data) {
+        $("#testdiv").html(data);
+        var name = $("#testdiv").find("title");
+        var kennung = $("#testdiv").find("#bqinfo");
+        var kategorien = $("#testdiv").find("#artikel").children();
+        var logo = "data/" + kennung.text() + ".png";
+        console.log("kennung:" + logo);
+        $("#bq").append("<dt>" + name.html() + "</dt><dd><img width=\"100px\" src=\"" + logo + "\"></dd>");
+
+        erstelleKategorie(kategorien);
+
+        for (var key in artikel) {
+          var value = artikel[key];
+          console.log("key: " + key);
+          var a = $("#artikel");
+          if (a.has("#" + key).length === 0) {
+            a.append("<li id=" + key + "><span>" + value.n + "</span><ul></ul></li>");
+          }
+          var kategorieEintrag = $("#" + key);
+          for (var akey in value.a) {
+            var aval = value.a[akey];
+            console.log("akey " + akey);
+            if (kategorieEintrag.has("#" + akey).length === 0) {
+              kategorieEintrag.find("ul").append("<li id=" + akey + ">" + aval.n + ", " + aval.ba + "</li>");
+              console.log("noch kein artikel");
+            } else {
+              kategorieEintrag.find("#" + akey).html(aval.n + ", " + aval.ba);
+            }
+          }
+        }
+
+      };
+      var fertigGeladen = function () {
+        var bq = [
+          //"data/beispielliste.html", "data/bq_01.html",
+          "data/lidl.html", "data/penny.html", "data/aldi.html",
+          "data/rewe.html", "data/inkoop.html", "data/marktkauf.html",
+          "data/netto.html", "data/rewe.html", "data/edeka.html",
+          "data/fuellkorn.html", "data/penny.html", "data/real.htm"];
+
+        for (var i = 0; i < bq.length; ++i) {
+          $.ajax({
+            url: bq[i],
+            dataType: "html",
+            success: ladeBQ
+          });
+
+        }
+      };
+      $(document).ready(fertigGeladen);
+    </script>
+  </head>
+  <body>
+    <header>
+      KAUFEN SIE JETZT EIN MIT DEM SEB
+    </header>
+    <main>
+      <h2>verfügbare Bezugsquellen</h2>
+      <dl id="bq">
+      </dl>
+      <h2>verfügbare Artikel</h2>
+      <ol  id="artikel">
+
+      </ol>
+    </main>
+
+    <div id="testdiv">
+
+    </div>
+  </body>
+</html>
