@@ -4,10 +4,21 @@
   <head>
     <title>SEB</title>
     <link href="css/styling.css" type="text/css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+
     <meta charset="utf-8">
     <script src="js/libs/jquery/jquery.js"></script>
+
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+            integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
+
     <script>
       var artikel = {}; // KategorieID -> {n: Name, a: {ArtikelID -> Artikel} }; Artikel: { n: Name, ba: "PEU" }
+      var bezugsquellen = {}; // bqInfo -> { name: Name, pos: [lat,lon], img: Pfad }
 
       var erstelleArtikel = function (katid, arts_li) {
         var ab = artikel[katid];
@@ -15,11 +26,11 @@
           var id = $(this).attr("id");
           var name = $(this).children("span:first-child").text();
           var verpa = $(this).children("span:nth-child(2)").text();
-          console.log("katid " + katid + ", idx " + idx + ", art_id " + id + ", art_name: " + name + ", art_verpack " + verpa);
+          //console.log("katid " + katid + ", idx " + idx + ", art_id " + id + ", art_name: " + name + ", art_verpack " + verpa);
 
           var alterArtikel = undefined;
           if (!(id in ab.a)) {
-            console.log(" nicht bekannt");
+            //console.log(" nicht bekannt");
             alterArtikel = {n: name, ba: verpa};
             ab.a[id] = alterArtikel;
           } else {
@@ -33,28 +44,46 @@
         kat.each(function (idx) {
           var id = $(this).attr("id");
           var name = $(this).children("span").text();
-          console.log("idx " + idx + ", id " + id + ", n " + name);
+          //console.log("idx " + idx + ", id " + id + ", n " + name);
           if (!(id in artikel)) {
-            console.log(" nicht bekannt");
+            //console.log(" nicht bekannt");
             artikel[id] = {n: name, a: {}};
           }
           erstelleArtikel(id, $(this).find("li"));
         });
       };
+      var coordStringToFloatArray = function (ks) {
+        var rr = null;
+        var r = ks.split(' ');
+        if (r.length === 2) {
+          var r1 = parseFloat(r[0]);
+          var r2 = parseFloat(r[1]);
+          rr = [r1, r2];
+        }
+        return rr;
+      };
       var ladeBQ = function (data) {
         $("#testdiv").html(data);
-        var name = $("#testdiv").find("title");
-        var kennung = $("#testdiv").find("#bqinfo");
+        var name = $("#testdiv").find("title").text();
+        var kennung = $("#testdiv").find("#bqinfo").text();
+        var koord = $("#testdiv").find("#bqcoord").text();
+        if (koord.length > 0) {
+          koord = coordStringToFloatArray(koord);
+        } else {
+          koord = null;
+        }
         var kategorien = $("#testdiv").find("#artikel").children();
-        var logo = "data/" + kennung.text() + ".png";
-        console.log("kennung:" + logo);
-        $("#bq").append("<dt>" + name.html() + "</dt><dd><img width=\"100px\" src=\"" + logo + "\"></dd>");
+        var logo = "data/" + kennung + ".png";
+        bezugsquellen[kennung] = {
+          name: name, pos: koord, img: logo
+        };
+        $("#bq").append("<dt>" + name + "</dt><dd><img width=\"100px\" src=\"" + logo + "\"></dd>");
 
         erstelleKategorie(kategorien);
 
         for (var key in artikel) {
           var value = artikel[key];
-          console.log("key: " + key);
+          //console.log("key: " + key);
           var a = $("#artikel");
           if (a.has("#" + key).length === 0) {
             a.append("<li id=" + key + "><span>" + value.n + "</span><ul></ul></li>");
@@ -62,10 +91,10 @@
           var kategorieEintrag = $("#" + key);
           for (var akey in value.a) {
             var aval = value.a[akey];
-            console.log("akey " + akey);
+            //console.log("akey " + akey);
             if (kategorieEintrag.has("#" + akey).length === 0) {
               kategorieEintrag.find("ul").append("<li id=" + akey + ">" + aval.n + ", " + aval.ba + "</li>");
-              console.log("noch kein artikel");
+              //console.log("noch kein artikel");
             } else {
               kategorieEintrag.find("#" + akey).html(aval.n + ", " + aval.ba);
             }
@@ -73,6 +102,29 @@
         }
 
       };
+      var erzeugeOSM = function () {
+
+        var p = [53.02618, 8.80107];
+
+        var mymap = L.map('mapid').setView(p, 18);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(mymap);
+
+        for (var bid in bezugsquellen) {
+          var bq = bezugsquellen[bid];
+          var pp = bq.pos;
+          if (pp !== null) {
+            var marker = L.marker(pp).addTo(mymap);
+
+            L.marker(p).addTo(mymap)
+                    .bindPopup(bq.name);
+
+          }
+        }
+      };
+
       var fertigGeladen = function () {
         var bq = [
           //"data/beispielliste.html", "data/bq_01.html",
@@ -85,10 +137,11 @@
           $.ajax({
             url: bq[i],
             dataType: "html",
+            async: false,
             success: ladeBQ
           });
-
         }
+        erzeugeOSM();
       };
       $(document).ready(fertigGeladen);
     </script>
@@ -105,6 +158,9 @@
       <ol  id="artikel">
 
       </ol>
+
+      <div id="mapid">
+      </div>
     </main>
 
     <div id="testdiv">
